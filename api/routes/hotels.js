@@ -62,7 +62,6 @@ router.delete("/:id", async (req, re, next) => {
     }catch(err){
         next(err)
     }
-    next()
 })
 
 
