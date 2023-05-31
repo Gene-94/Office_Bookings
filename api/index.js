@@ -25,35 +25,34 @@ mongoose.connection.on("connected", ()=>{
 
 
 //middlewares
-function logger(req, res){
+
+app.enable('trust proxy')
+app.use((req, res, next)=>{
     const req_url = new URL(req.url, `http://${req.headers.host}`);
     console.log(`${req.ip} connected with ${req.method} to ${req_url}`)
     res.on("finish", () => {
         console.log(`${req_url} responded ${res.statusCode} to ${req.ip}`)
     });
-}
-
-app.use(express.json())
-
-app.enable('trust proxy')
-app.use((req, res, next)=>{
-    logger(req, res)
     next()
 })
 
-app.use((err, req, res, next) => {
-    logger(req, res)
-    if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
-        return res.status(400).send({ status: 404, message: err.message }); // Bad request
-    }
-    next();
-});
+app.use(express.json())
+
 
 app.use("/api/auth", authRouter)
 app.use("/api/users", usersRouter)
 app.use("/api/rooms", roomsRouter)
 app.use("/api/hotels", hotelsRouter)
 
+app.use((err, req, res, next) => {
+    const errorStatus = err.status || 500
+    const errorMessage = err.message || "Something went wrong"
+    return res.status(errorStatus).json({
+        sucess: false,
+        status: errorStatus,
+        message: errorMessage
+    })
+});
 
 //server launch
 app.listen(8880, () => {
