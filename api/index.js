@@ -5,6 +5,7 @@ import authRouter from "./routes/auth.js"
 import hotelsRouter from "./routes/hotels.js"
 import roomsRouter from "./routes/rooms.js"
 import usersRouter from "./routes/users.js"
+import cookieParser from "cookie-parser"
 
 
 
@@ -35,6 +36,8 @@ app.use((req, res, next)=>{
     });
     next()
 })
+
+app.use(cookieParser())
 
 app.use(express.json())
 
