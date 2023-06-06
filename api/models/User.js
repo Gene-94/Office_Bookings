@@ -9,9 +9,12 @@ const UserSchema = new mongoose.Schema({
   email : {
     type: String,
     required: true,
-    unique: true
+    unique: true,
+    //validate for correct email format
+    match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "invalid email format"]
   },
   password : {
+    //pass wprd is hashed therefore validation is made on submittion
     type: String,
     required: true
   },

@@ -14,7 +14,7 @@ export const register = async (req, res, next) => {
             password: hash,
         })
 
-        await newUser.save()
+        await newUser. save()
         res.status(201).send(`user created with id ${newUser.id}`)
     }catch(err){
         next(err)
