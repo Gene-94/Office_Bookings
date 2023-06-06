@@ -6,6 +6,7 @@ import hotelsRouter from "./routes/hotels.js"
 import roomsRouter from "./routes/rooms.js"
 import usersRouter from "./routes/users.js"
 import cookieParser from "cookie-parser"
+import { handleError } from "./utils/error.js"
 
 
 
@@ -48,8 +49,13 @@ app.use("/api/rooms", roomsRouter)
 app.use("/api/hotels", hotelsRouter)
 
 app.use((err, req, res, next) => {
+    handleError(err, next);
+});
+
+app.use((err, req, res, next) => {
     const errorStatus = err.status || 500
     const errorMessage = err.message || "Something went wrong"
+    
     return res.status(errorStatus).json({
         sucess: false,
         status: errorStatus,
