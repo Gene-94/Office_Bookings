@@ -6,6 +6,10 @@ export const createRoom = async (req, res, next) => {
     try{
         const hotelId = req.params.hotelid
         const newRoom = new Room(req.body)
+
+        if(Room.findOne({title:newRoom.title})){
+            return next(createError(409, `Room ${newRoom.title} already exists`))
+        }
         
         const savedRoom = await newRoom.save()
 

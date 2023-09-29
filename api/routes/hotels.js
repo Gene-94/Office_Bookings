@@ -1,5 +1,5 @@
 import express from "express";
-import { createHotel } from "../controllers/hotel.js";
+import { countByCity, countByType, createHotel } from "../controllers/hotel.js";
 import { getHotel } from "../controllers/hotel.js";
 import { getHotels } from "../controllers/hotel.js";
 import { updateHotel  } from "../controllers/hotel.js";
@@ -13,9 +13,13 @@ const router = express.Router();
 router.post("/", verifyAdmin, createHotel)
 
 //Read
-router.get("/:id", getHotel)
+router.get("/find/:id", getHotel)
 
 router.get("/", getHotels)
+
+router.get("/countByCity", countByCity)
+
+router.get("/countByType", countByType)
 
 //Update
 
