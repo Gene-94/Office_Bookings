@@ -1,6 +1,12 @@
 import { createError } from "../utils/error.js";
 import User from "../models/User.js"
 
+import dotenv from "dotenv"
+import hubspot from '@hubspot/api-client'
+
+dotenv.config()
+const HubClient = new hubspot.Client({ accessToken: process.env.HUBSPOT_API });
+
 export const getUser = async (req, res, next) => {
     try{
         const user = await User.findById(req.params.id)
@@ -12,11 +18,18 @@ export const getUser = async (req, res, next) => {
 }
 export const getUsers = async (req, res, next) => {
     try{
+        const allUsers = await HubClient.crm.contacts.getAll();
+        res.status(200).json(allUsers);
+    }
+    catch(err){
+        next(err);
+    }
+    /*try{
         const allUsers = await User.find()
         res.status(200).json(allUsers)
     }catch(err){
         next(err)
-    }
+    }*/
 }
 export const updateUser = async (req, res, next) => {
     try{

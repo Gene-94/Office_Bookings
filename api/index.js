@@ -10,6 +10,8 @@ import { handleError } from "./utils/error.js"
 
 
 
+
+
 const app = express()
 dotenv.config()
 
@@ -43,6 +45,7 @@ app.use(cookieParser())
 app.use(express.json())
 
 
+
 app.use("/api/auth", authRouter)
 app.use("/api/users", usersRouter)
 app.use("/api/rooms", roomsRouter)
@@ -64,7 +67,7 @@ app.use((err, req, res, next) => {
 });
 
 //server launch
-app.listen(8880, () => {
+app.listen(8888, () => {
     connect()
     console.log("connected")
 })
